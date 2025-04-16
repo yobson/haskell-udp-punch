@@ -1,0 +1,35 @@
+cabal-version:   3.0
+name:            udp-punch
+version:         0.1.0.0
+license:         NONE
+author:          James Hobson
+maintainer:      james.hobson@student.uib.no
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall -threaded
+
+
+common depends
+  build-depends: base >= 4.2 && <5.0
+
+executable server
+    import:           warnings, depends
+    main-is:          Main.hs
+    build-depends:    network-run,
+                      bytestring,
+                      attoparsec,
+                      network
+    hs-source-dirs:   server
+    default-language: Haskell2010
+
+executable client
+    import:           warnings, depends
+    main-is:          Main.hs
+    build-depends:    network-run,
+                      bytestring,
+                      attoparsec,
+                      network
+    hs-source-dirs:   client
+    default-language: Haskell2010
