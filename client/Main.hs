@@ -58,11 +58,11 @@ handleChat sock addr = do
   void $ sendTo sock "" addr -- Send blank
   void $ forkIO $ fix $ \loop -> do
     (msg, _) <- recvFrom sock 1024
-    putStrLn $ BS.unpack msg
+    putStr $ concat ["[", show addr, "]", ": ", BS.unpack msg]
     loop
 
   fix $ \loop -> do
     msg <- BS.pack <$> getLine
-    void $ sendTo sock msg addr
+    void $ sendTo sock (msg <> "\n") addr
     loop
   return ()
