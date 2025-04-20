@@ -55,6 +55,7 @@ handle sock addr = do
 
 handleChat :: Socket -> SockAddr -> IO ()
 handleChat sock addr = do
+  void $ sendTo sock "" addr -- Send blank
   void $ forkIO $ fix $ \loop -> do
     (msg, _) <- recvFrom sock 1024
     putStrLn $ BS.unpack msg
