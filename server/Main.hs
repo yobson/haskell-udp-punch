@@ -15,6 +15,7 @@ import Control.Monad
 import Data.Functor
 -- import Data.List
 import Control.Monad.Fix
+import System.Environment
 
 
 data Message = REQ Integer
@@ -30,10 +31,17 @@ parseMsg = parseOnly message
 
 main :: IO ()
 main = do
+  args <- getArgs
+  let (server, port) = case args of
+        [server,port] -> (server,port)
+        [port]        -> ("0.0.0.0", port)
+        []            -> ("0.0.0.0", "12345")
+        _             -> error "Unknown args"
+  
   clients <- newMVar []
   ids     <- newMVar 0
   fix $ \loop -> do
-    runUDPServer (Just "0.0.0.0") "12345" (handle ids clients)
+    runUDPServer (Just server) port (handle ids clients)
     loop
 
 handle :: MVar Integer -> MVar [(Integer, SockAddr)] -> Socket -> IO ()

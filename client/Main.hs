@@ -14,11 +14,7 @@ import Control.Monad
 import Data.Functor
 import Control.Monad.Fix
 import System.IO
-
-server :: String
-server = "127.0.0.1"
-port :: String
-port = "12345"
+import System.Environment
 
 data Message = REQ Integer
              | REG
@@ -40,6 +36,7 @@ readAddr s = SockAddrInet (read port) $ tupleToHostAddress (read one, read two, 
 
 main :: IO ()
 main = do
+  [server,port] <- getArgs
   hSetBuffering stdout NoBuffering
   runUDPClient server port handle
 
